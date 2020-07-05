@@ -9,21 +9,27 @@ import java.util.List;
 @Repository
 @Mapper
 public interface UserMapper {
-    @Select("SELECT * FROM USERS")
-    List<User> findAll();
-
-    @Select("SELECT * FROM USERS WHERE userid = #{userid}")
-    User findById(Integer userid);
-
+//    @Select("SELECT * FROM USERS")
+//    List<User> findAll();
+//
+//    @Select("SELECT * FROM USERS WHERE userid = #{userid}")
+//    User findById(Integer userid);
+//
+//    @Select("SELECT * FROM USERS WHERE username = #{username}")
+//    User findByUsername(String username);
+//
+//    @Insert("INSERT INTO USERS (username, password, salt, firstname, lastname VALUES (#{username}, #{password}, #{salt}, #{firstname}, #{lastname})")
+//    Integer insertUser(User user);
+//
+//    @Delete("DELETE FROM USERS WHERE username = #{username}")
+//    Integer deleteUser(String username);
+//
+//    @Update("UPDATE USERS SET username = #{username}, password = #{password}, salt = #{salt}, firstname = #{firstname}, lastname = #{lastname} WHERE userid = #{userid}")
+//    Integer updateUser(User user);
     @Select("SELECT * FROM USERS WHERE username = #{username}")
-    User findByUsername(String username);
+    User getUser(String username);
 
-    @Insert("INSERT INTO USERS (username, password, salt, firstname, lastname VALUES (#{username}, #{password}, #{salt}, #{firstname}, #{lastname})")
-    Integer insertUser(User user);
-
-    @Delete("DELETE FROM USERS WHERE username = #{username}")
-    Integer deleteUser(String username);
-
-    @Update("UPDATE USERS SET username = #{username}, password = #{password}, salt = #{salt}, firstname = #{firstname}, lastname = #{lastname} WHERE userid = #{userid}")
-    Integer updateUser(User user);
+    @Insert("INSERT INTO USERS (username, salt, password, firstname, lastname) VALUES(#{username}, #{salt}, #{password}, #{firstName}, #{lastName})")
+    @Options(useGeneratedKeys = true, keyProperty = "userid")
+    int insert(User user);
 }

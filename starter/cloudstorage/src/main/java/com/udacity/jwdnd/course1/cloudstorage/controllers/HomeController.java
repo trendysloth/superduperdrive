@@ -11,22 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpSession;
 
 @Controller
+@RequestMapping("/home")
 public class HomeController {
-    @Autowired
-    private UserService userService;
-
-    @RequestMapping(value = {"/", "/login", "/home"})
-    public String login(HttpSession session, Model model) {
-        User user = (User) session.getAttribute("user");
-        System.out.println(user);
-//        if (session.getAttribute("user") == null) {
-//            return "login";
-//        }
-//        User savedUser = userService.loadUserByUsername(user.getUserName());
-//
-//        model.addAttribute("files", fileService.getAllFilesByUserId(savedUser.getUserid()));
-//        model.addAttribute("credentials", credentialService.getAllByUserid(savedUser.getUserid()));
-//        model.addAttribute("notes", notesService.getAllByUserid(savedUser.getUserid()));
+    @GetMapping()
+    public String homepageView() {
         return "home";
     }
 }
