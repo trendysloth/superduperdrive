@@ -10,4 +10,15 @@ public class User {
     private String password;
     private String firstname;
     private String lastname;
+
+    public void setPassword(String encodedPW) {
+        this.password = encodedPW;
+    }
+
+    public String getPassword() {
+        return this.password;
+    }
+    public String getUsername() {
+        return this.username;
+    }
 }
