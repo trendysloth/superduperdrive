@@ -14,8 +14,6 @@ public class FileService {
     @Autowired
     private FileMapper fileMapper;
 
-
-
     public Files uploadFile(MultipartFile multipartFile, Integer userId) throws IOException {
         Files newFile = new Files(
             null,
