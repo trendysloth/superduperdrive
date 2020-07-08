@@ -24,7 +24,7 @@ public class FileService {
             userId
         );
         try {
-            fileMapper.uploadFile(newFile);
+            fileMapper.save(newFile);
         } catch (Exception e) {
             e.printStackTrace();
         }
