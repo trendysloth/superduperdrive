@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper
 public interface FileMapper {
     @Select("INSERT INTO FILES (filename, contenttype, filesize, userid, filedata) VALUES " +
-            "(#{fileName}, #{contentType}, #{fileSize}, #{userId}, #{fileData})")
+            "(#{file.fileName}, #{file.contentType}, #{file.fileSize}, #{file.userId}, #{file.fileData})")
     Integer save(@Param("file") Files file);
 
     @Select("SELECT * FROM FILES WHERE userid = #{userId}")

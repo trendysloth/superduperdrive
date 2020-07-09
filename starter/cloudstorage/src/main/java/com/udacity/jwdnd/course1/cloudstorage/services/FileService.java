@@ -16,7 +16,6 @@ public class FileService {
 
     public Files uploadFile(MultipartFile multipartFile, Integer userId) throws IOException {
         Files newFile = new Files(
-            null,
             multipartFile.getOriginalFilename(),
             multipartFile.getContentType(),
             multipartFile.getSize(),
