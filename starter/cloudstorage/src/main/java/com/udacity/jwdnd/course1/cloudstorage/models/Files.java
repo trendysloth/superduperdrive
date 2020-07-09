@@ -8,7 +8,20 @@ public class Files {
     private byte[] fileData;
     private Integer userId;
 
+    public Files() {
+
+    }
+
     public Files(String fileName, String contentType, Long fileSize, byte[] fileData, Integer userId) {
+        this.fileName = fileName;
+        this.contentType = contentType;
+        this.fileSize = fileSize;
+        this.fileData = fileData;
+        this.userId = userId;
+    }
+
+    public Files(Integer fileId, String fileName, String contentType, Long fileSize, byte[] fileData, Integer userId) {
+        this.fileId = fileId;
         this.fileName = fileName;
         this.contentType = contentType;
         this.fileSize = fileSize;

@@ -27,10 +27,12 @@ public class FileController {
 
     @PostMapping("/file-upload")
     public String uploadFile(@RequestParam("fileUpload") MultipartFile fileUpload,
-                             Authentication auth, Model model) throws IOException {
+                             Authentication auth,
+                             Model model) throws IOException {
         User user = this.userService.getUser(auth.getName());
         this.fileService.uploadFile(fileUpload, user.getUserid());
         model.addAttribute("files", this.fileService.getAllFiles(user.getUserid()));
+        System.out.println(this.fileService.getAllFiles(user.getUserid()));
         return "home";
     }
 }

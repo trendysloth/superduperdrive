@@ -16,12 +16,13 @@ public class FileService {
 
     public Files uploadFile(MultipartFile multipartFile, Integer userId) throws IOException {
         Files newFile = new Files(
-            multipartFile.getOriginalFilename(),
-            multipartFile.getContentType(),
-            multipartFile.getSize(),
-            multipartFile.getBytes(),
-            userId
+                multipartFile.getOriginalFilename(),
+                multipartFile.getContentType(),
+                multipartFile.getSize(),
+                multipartFile.getBytes(),
+                userId
         );
+
         try {
             fileMapper.save(newFile);
         } catch (Exception e) {
