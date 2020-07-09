@@ -32,6 +32,7 @@ public class FileController {
         User user = this.userService.getUser(auth.getName());
         this.fileService.uploadFile(fileUpload, user.getUserid());
         model.addAttribute("files", this.fileService.getAllFiles(user.getUserid()));
+        System.out.println(user.getUserid());
         System.out.println(this.fileService.getAllFiles(user.getUserid()));
         return "home";
     }
