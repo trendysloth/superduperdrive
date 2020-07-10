@@ -54,7 +54,8 @@
                         <tr th:each="file : ${files}">
                             <td>
                                 <a target="_blank" class="btn btn-success" th:href="@{/file/view/{fileId}(fileId=${file.fileId})}" >View</a>
-                                <a  class="btn btn-danger" th:href="@{/file/{fileId}(fileId=${file.fileId})}">Delete</a>
+                                <a class="btn btn-danger" th:href="@{/file-delete/{fileId}(fileId=${file.fileId})}">Delete</a>
+<!--                                <a th:href="@{/file-delete/{fileid}(fileid=${file.fileid})}" class="btn btn-danger" th:method="delete">Delete</a>-->
                             </td>
                             <th scope="row" th:text="${file.fileName}">ExampleFile.txt</th>
                         </tr>
