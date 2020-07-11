@@ -35,6 +35,10 @@ public class FileService {
         return fileMapper.findFilesByUserId(userId);
     }
 
+    public Files getFileById(Integer fileId) throws IOException {
+        return fileMapper.findById(fileId);
+    }
+
     public void deleteFile(Integer fileId) throws IOException {
         try {
             fileMapper.deleteById(fileId);
