@@ -4,6 +4,7 @@ import com.udacity.jwdnd.course1.cloudstorage.models.Files;
 import com.udacity.jwdnd.course1.cloudstorage.models.User;
 import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
 
+import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -23,12 +24,14 @@ import java.io.IOException;
 
 @Controller
 public class FileController {
-    private FileService fileService;
+    private NoteService noteService;
     private UserService userService;
+    private FileService fileService;
 
-    public FileController(FileService fileService, UserService userService) {
-        this.fileService = fileService;
+    public FileController(NoteService noteService, UserService userService, FileService fileService) {
+        this.noteService = noteService;
         this.userService = userService;
+        this.fileService = fileService;
     }
 
     @PostMapping("/file-upload")
@@ -38,6 +41,7 @@ public class FileController {
         User user = this.userService.getUser(auth.getName());
         this.fileService.uploadFile(fileUpload, user.getUserid());
         model.addAttribute("files", this.fileService.getAllFiles(user.getUserid()));
+        model.addAttribute("notes", this.noteService.getAllNotes(user.getUserid()));
         return "home";
     }
 
@@ -61,6 +65,7 @@ public class FileController {
         fileService.deleteFile(fileId);
         User user = this.userService.getUser(auth.getName());
         model.addAttribute("files", this.fileService.getAllFiles(user.getUserid()));
+        model.addAttribute("notes", this.noteService.getAllNotes(user.getUserid()));
         return "home";
     }
 }
