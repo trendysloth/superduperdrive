@@ -19,7 +19,10 @@ public class CredentialService {
         this.credentialMapper = credentialMapper;
     }
 
-    public Credentials uploadCredential(String url, String username, String password, Integer userId) throws IOException {
+    public Credentials uploadCredential(String url,
+                                        String username,
+                                        String password,
+                                        Integer userId) throws IOException {
         Credentials newCredential = new Credentials(
             url,
             username,
@@ -34,7 +37,35 @@ public class CredentialService {
         return newCredential;
     }
 
+    public Credentials updateCredential(Integer credentialId,
+                                        String credentialUrl,
+                                        String credentialUsername,
+                                        String credentialPassword,
+                                        Integer userId) throws IOException {
+        Credentials newCredential = new Credentials(
+            credentialId,
+            credentialUrl,
+            credentialUsername,
+            credentialPassword,
+            userId
+        );
+        try {
+            credentialMapper.update(newCredential);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return newCredential;
+    }
+
     public List<Credentials> getAllCredentials(Integer userId) {
         return credentialMapper.findCredentialsByUserId(userId);
+    }
+
+    public void deleteCredential(Integer credentialId) throws IOException {
+        try {
+            credentialMapper.deleteById(credentialId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

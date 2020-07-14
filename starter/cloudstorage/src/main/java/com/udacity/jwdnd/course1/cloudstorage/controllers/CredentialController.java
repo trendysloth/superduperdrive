@@ -8,7 +8,9 @@ import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
@@ -29,21 +31,32 @@ public class CredentialController {
     }
 
     @PostMapping("/credential-upload")
-    public String uploadCredential(@RequestParam("credentialId") String credentialId,
+    public String uploadCredential(@RequestParam("credentialId") Integer credentialId,
                                    @RequestParam("url") String credentialUrl,
                                    @RequestParam("username") String credentialUsername,
                                    @RequestParam("password") String credentialPassword,
                                    Authentication auth,
                                    Model model) throws IOException {
-//        System.out.println(credentialId + " " + credentialUrl + " " + credentialUsername + " " + credentialPassword);
-//        System.out.println(credentialId == null);
         User user = this.userService.getUser(auth.getName());
-//        if (credentialId == null) {
-//
-//        } else {
-////            this.noteService.updateNote(noteId, noteTitle, noteDescription, user.getUserid());
-//        }
-        this.credentialService.uploadCredential(credentialUrl, credentialUsername, credentialPassword, user.getUserid());
+//        System.out.println(credentialId.toString());
+        if (credentialId.toString() == "") {
+            this.credentialService.uploadCredential(credentialUrl, credentialUsername, credentialPassword, user.getUserid());
+        } else {
+            this.credentialService.updateCredential(credentialId, credentialUrl, credentialUsername, credentialPassword, user.getUserid());
+        }
+        model.addAttribute("files", this.fileService.getAllFiles(user.getUserid()));
+        model.addAttribute("notes", this.noteService.getAllNotes(user.getUserid()));
+        model.addAttribute("credentials", this.credentialService.getAllCredentials(user.getUserid()));
+        return "home";
+    }
+
+    @RequestMapping("/credential-delete/{credentialId}")
+    public String deleteCredential(@PathVariable("credentialId") Integer credentialId,
+                                   Authentication auth,
+                                   Model model) throws IOException {
+//        System.out.println(credentialId);
+        User user = this.userService.getUser(auth.getName());
+        this.credentialService.deleteCredential(credentialId);
         model.addAttribute("files", this.fileService.getAllFiles(user.getUserid()));
         model.addAttribute("notes", this.noteService.getAllNotes(user.getUserid()));
         model.addAttribute("credentials", this.credentialService.getAllCredentials(user.getUserid()));
