@@ -2,8 +2,8 @@ package com.udacity.jwdnd.course1.cloudstorage.controllers;
 
 import com.udacity.jwdnd.course1.cloudstorage.models.Files;
 import com.udacity.jwdnd.course1.cloudstorage.models.User;
+import com.udacity.jwdnd.course1.cloudstorage.services.CredentialService;
 import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
-
 import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +27,13 @@ public class FileController {
     private NoteService noteService;
     private UserService userService;
     private FileService fileService;
+    private CredentialService credentialService;
 
-    public FileController(NoteService noteService, UserService userService, FileService fileService) {
+    public FileController(NoteService noteService, UserService userService, FileService fileService, CredentialService credentialService) {
         this.noteService = noteService;
         this.userService = userService;
         this.fileService = fileService;
+        this.credentialService = credentialService;
     }
 
     @PostMapping("/file-upload")
@@ -42,6 +44,7 @@ public class FileController {
         this.fileService.uploadFile(fileUpload, user.getUserid());
         model.addAttribute("files", this.fileService.getAllFiles(user.getUserid()));
         model.addAttribute("notes", this.noteService.getAllNotes(user.getUserid()));
+        model.addAttribute("credentials", this.credentialService.getAllCredentials(user.getUserid()));
         return "home";
     }
 
@@ -66,6 +69,7 @@ public class FileController {
         User user = this.userService.getUser(auth.getName());
         model.addAttribute("files", this.fileService.getAllFiles(user.getUserid()));
         model.addAttribute("notes", this.noteService.getAllNotes(user.getUserid()));
+        model.addAttribute("credentials", this.credentialService.getAllCredentials(user.getUserid()));
         return "home";
     }
 }
