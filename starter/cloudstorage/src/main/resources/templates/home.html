@@ -29,7 +29,8 @@
 <div class="container">
     <div id="logoutDiv">
         <form th:action="@{/logout}" method="POST">
-            <button type="submit" class="btn btn-secondary float-right">
+            <button type="submit" class="btn btn-secondary float-right"
+                    onclick="localStorage.setItem('activeTab', 'nav-files');">
                 Logout
             </button>
         </form>
@@ -168,7 +169,7 @@
                             <tr th:each="credential:${credentials}">
                                 <td>
                                     <button type="button" class="btn btn-success"
-                                            th:onclick="javascript:showCredentialModal([[${credential.credentialId}]],[[${credential.url}]],[[${credential.username}]], [[${credential.password}]])">
+                                        th:onclick="javascript:showCredentialModal([[${credential.credentialId}]],[[${credential.url}]],[[${credential.username}]], [[${credential.password}]])">
                                         Edit
                                     </button>
                                     <a class="btn btn-danger"

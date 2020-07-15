@@ -38,8 +38,9 @@ public class CredentialController {
                                    Authentication auth,
                                    Model model) throws IOException {
         User user = this.userService.getUser(auth.getName());
-//        System.out.println(credentialId.toString());
-        if (credentialId.toString() == "") {
+//        System.out.println("credential id is " + credentialId);
+//        System.out.println(credentialId == null);
+        if (credentialId == null) {
             this.credentialService.uploadCredential(credentialUrl, credentialUsername, credentialPassword, user.getUserid());
         } else {
             this.credentialService.updateCredential(credentialId, credentialUrl, credentialUsername, credentialPassword, user.getUserid());
