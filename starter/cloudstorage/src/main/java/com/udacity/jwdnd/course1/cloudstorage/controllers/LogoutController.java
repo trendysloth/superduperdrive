@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class LogoutController {
     @PostMapping()
     public String logout() {
-
         return "login";
     }
 }
