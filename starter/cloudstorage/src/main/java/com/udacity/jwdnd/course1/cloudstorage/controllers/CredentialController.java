@@ -46,6 +46,19 @@ public class CredentialController {
         return "home";
     }
 
+//    @RequestMapping("/credential-update/{credentialId}")
+//    public String updateCredential(@PathVariable("credentialId") Integer credentialId,
+//                                   Authentication auth,
+//                                   Model model) throws IOException {
+//
+//        User user = this.userService.getUser(auth.getName());
+////        this.credentialService.deleteCredential(credentialId);
+//        model.addAttribute("files", this.fileService.getAllFiles(user.getUserid()));
+//        model.addAttribute("notes", this.noteService.getAllNotes(user.getUserid()));
+//        model.addAttribute("credentials", this.credentialService.getAllCredentials(user.getUserid()));
+//        return "home";
+//    }
+
     @RequestMapping("/credential-delete/{credentialId}")
     public String deleteCredential(@PathVariable("credentialId") Integer credentialId,
                                    Authentication auth,
