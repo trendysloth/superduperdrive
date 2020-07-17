@@ -147,4 +147,71 @@ class CloudStorageApplicationTests {
 		Assertions.assertTrue(noteDeleted);
 		Assertions.assertTrue(noteEdited);
 	}
+
+	// test credentials
+	@Test
+	@Order(5)
+	public void testCredentials() throws InterruptedException {
+		// login
+		driver.get("http://localhost:" + this.port + "/login");
+		driver.findElement(By.id("inputUsername")).sendKeys("test3");
+		driver.findElement(By.id("inputPassword")).sendKeys("test3");
+		driver.findElement(By.id("submit-button")).click();
+
+		// Switch to credentials tab
+		driver.findElement(By.id("nav-credentials-tab")).click();
+		Thread.sleep(2000);
+
+		// Create a new credential
+		boolean credentialCreated = false;
+		try {
+			driver.findElement(By.id("new-credential")).click();
+			Thread.sleep(2000);
+			driver.findElement(By.id("credential-url")).sendKeys("gmail.com");
+			driver.findElement(By.id("credential-username")).sendKeys("test");
+			driver.findElement(By.id("credential-password")).sendKeys("test");
+			driver.findElement(By.id("credential-submit")).click();
+			Thread.sleep(4000);
+			credentialCreated = true;
+		} catch(Exception e) {
+			System.out.println(e);
+		}
+
+		// Delete a credential
+		Thread.sleep(4000);
+		boolean credentialDeleted = false;
+		WebElement notesTable = driver.findElement(By.id("credentialTable"));
+		List<WebElement> noteLink = notesTable.findElements(By.tagName("a"));
+		for (int i = 0; i < noteLink.size(); i++){
+			WebElement deleteNoteButton = noteLink.get(i);
+			deleteNoteButton.click();
+			credentialDeleted = true;
+			break;
+		}
+
+		// Edit a credential
+		Thread.sleep(2000);
+		notesTable = driver.findElement(By.id("credentialTable"));
+		List<WebElement> noteList = notesTable.findElements(By.tagName("td"));
+		boolean credentialEdited = false;
+		for (int i=0; i<noteList.size(); i++){
+			WebElement row = noteList.get(i);
+			WebElement editButton = null;
+			editButton = row.findElement(By.tagName("button"));
+			editButton.click();
+			if (!ObjectUtils.isEmpty(editButton)){
+				Thread.sleep(2000);
+				driver.findElement(By.id("credential-url")).sendKeys(".uk");
+				driver.findElement(By.id("credential-username")).sendKeys("-2");
+				driver.findElement(By.id("credential-password")).sendKeys("-2");
+				driver.findElement(By.id("credential-submit")).click();
+				credentialEdited = true;
+				Assertions.assertEquals("Home", driver.getTitle());
+				break;
+			}
+		}
+		Assertions.assertTrue(credentialCreated);
+		Assertions.assertTrue(credentialDeleted);
+		Assertions.assertTrue(credentialEdited);
+	}
 }
