@@ -9,24 +9,34 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.List;
 
 @Service
 public class CredentialService {
     private final CredentialMapper credentialMapper;
+    private final EncryptionService encryptionService;
+    private String encodedKey;
 
-    public CredentialService(CredentialMapper credentialMapper) {
+    public CredentialService(CredentialMapper credentialMapper, EncryptionService encryptionService) {
         this.credentialMapper = credentialMapper;
+        this.encryptionService = encryptionService;
+        SecureRandom random = new SecureRandom();
+        byte[] key = new byte[16];
+        random.nextBytes(key);
+        this.encodedKey = Base64.getEncoder().encodeToString(key);
     }
 
     public Credentials uploadCredential(String url,
                                         String username,
                                         String password,
                                         Integer userId) throws IOException {
+        String encryptedPassword = encryptionService.encryptValue(password, this.encodedKey);
         Credentials newCredential = new Credentials(
             url,
             username,
-            password,
+            encryptedPassword,
             userId
         );
         try {
@@ -42,11 +52,12 @@ public class CredentialService {
                                         String credentialUsername,
                                         String credentialPassword,
                                         Integer userId) throws IOException {
+        String encryptedPassword = encryptionService.encryptValue(credentialPassword, this.encodedKey);
         Credentials newCredential = new Credentials(
             credentialId,
             credentialUrl,
             credentialUsername,
-            credentialPassword,
+            encryptedPassword,
             userId
         );
         try {
