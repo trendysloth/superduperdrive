@@ -44,10 +44,10 @@ class CloudStorageApplicationTests {
 	public void testSignUp() throws InterruptedException {
 		// sign up
 		driver.get("http://localhost:" + this.port + "/signup");
-		driver.findElement(By.id("inputFirstName")).sendKeys("01");
-		driver.findElement(By.id("inputLastName")).sendKeys("01");
-		driver.findElement(By.id("inputUsername")).sendKeys("01");
-		driver.findElement(By.id("inputPassword")).sendKeys("01");
+		driver.findElement(By.id("inputFirstName")).sendKeys("test-test");
+		driver.findElement(By.id("inputLastName")).sendKeys("test-test");
+		driver.findElement(By.id("inputUsername")).sendKeys("test-test");
+		driver.findElement(By.id("inputPassword")).sendKeys("test-test");
 		Thread.sleep(4000);
 		driver.findElement(By.id("submit-button")).click();
 
@@ -55,8 +55,8 @@ class CloudStorageApplicationTests {
 		driver.get("http://localhost:" + this.port + "/login");
 
 		// login
-		driver.findElement(By.id("inputUsername")).sendKeys("01");
-		driver.findElement(By.id("inputPassword")).sendKeys("01");
+		driver.findElement(By.id("inputUsername")).sendKeys("test-test");
+		driver.findElement(By.id("inputPassword")).sendKeys("test-test");
 		driver.findElement(By.id("submit-button")).click();
 		Thread.sleep(4000);
 
