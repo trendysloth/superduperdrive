@@ -50,8 +50,8 @@ public class Credentials {
     public String decryptPassword(String password) {
         System.out.println("Encryption Service: " + this.encryptionService);
         System.out.println("Decryption Key: " + this.encodedKey);
-//        String decryptedPassword = this.encryptionService.encryptValue(password, this.encodedKey);
-        return "haha";
+        String decryptedPassword = this.encryptionService.encryptValue(password, this.encodedKey);
+        return decryptedPassword;
     }
 
 

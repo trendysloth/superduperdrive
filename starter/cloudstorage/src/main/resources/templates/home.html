@@ -167,13 +167,21 @@
                         <tbody>
                             <tr th:each="credential:${credentials}">
                                 <td>
-                                    <a type="button" class="btn btn-success"
-                                        th:onclick="javascript:showCredentialModal([[${credential.credentialId}]],[[${credential.url}]],
-                                                                                   [[${credential.username}]],
-                                                                                   [[${credential.decryptPassword(credential.password)}]])">
-<!--                                        th:href="@{/credential-update/{credentialId}(credentialId=${credential.credentialId})}">-->
+<!--                                    <a type="button" class="btn btn-success"-->
+<!--                                        th:onclick="javascript:showCredentialModal([[${credential.credentialId}]],[[${credential.url}]],-->
+<!--                                                                                   [[${credential.username}]],-->
+<!--                                                                                   [[${credential.decryptPassword(credential.password)}]])">-->
+<!--&lt;!&ndash;                                        th:href="@{/credential-update/{credentialId}(credentialId=${credential.credentialId})}">&ndash;&gt;-->
+<!--                                        Edit-->
+<!--                                    </a>-->
+                                    <button type="button" class="btn btn-success"
+                                            th:onclick="javascript:showCredentialModal([[${credential.credentialId}]],
+                                                                                       [[${credential.url}]],
+                                                                                       [[${credential.username}]],
+                                                                                       [[${credential.decryptPassword(credential.password)}]])">
+                                        <!--th:href="@{/credential-update/{credentialId}(credentialId=${credential.credentialId})}">-->
                                         Edit
-                                    </a>
+                                    </button>
                                     <a class="btn btn-danger" th:href="@{/credential-delete/{credentialId}(credentialId=${credential.credentialId})}">
                                         Delete
                                     </a>
