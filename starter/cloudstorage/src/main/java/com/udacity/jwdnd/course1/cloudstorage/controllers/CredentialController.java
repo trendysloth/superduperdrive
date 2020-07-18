@@ -1,16 +1,19 @@
 package com.udacity.jwdnd.course1.cloudstorage.controllers;
 
+import com.udacity.jwdnd.course1.cloudstorage.models.Credentials;
 import com.udacity.jwdnd.course1.cloudstorage.models.User;
 import com.udacity.jwdnd.course1.cloudstorage.services.*;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.security.SecureRandom;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class CredentialController {
@@ -46,18 +49,18 @@ public class CredentialController {
         return "home";
     }
 
-//    @RequestMapping("/credential-update/{credentialId}")
-//    public String updateCredential(@PathVariable("credentialId") Integer credentialId,
-//                                   Authentication auth,
-//                                   Model model) throws IOException {
-//
-//        User user = this.userService.getUser(auth.getName());
-////        this.credentialService.deleteCredential(credentialId);
-//        model.addAttribute("files", this.fileService.getAllFiles(user.getUserid()));
-//        model.addAttribute("notes", this.noteService.getAllNotes(user.getUserid()));
-//        model.addAttribute("credentials", this.credentialService.getAllCredentials(user.getUserid()));
-//        return "home";
-//    }
+    @GetMapping(value = "/decode-password")
+    @ResponseBody
+    public Map<String, String> decodePassword(@RequestParam Integer credentialId){
+        Credentials credential = credentialService.decodePassword(credentialId);
+        String encryptedPassword = credential.getPassword();
+        String encodedKey = credential.getKey();
+        EncryptionService encryptionService = new EncryptionService();
+        String decryptedPassword = encryptionService.decryptValue(encryptedPassword, encodedKey);
+        Map<String, String> response = new HashMap<>();
+        response.put("decryptedPassword", decryptedPassword);
+        return response;
+    }
 
     @RequestMapping("/credential-delete/{credentialId}")
     public String deleteCredential(@PathVariable("credentialId") Integer credentialId,

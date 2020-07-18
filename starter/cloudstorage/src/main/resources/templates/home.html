@@ -167,19 +167,8 @@
                         <tbody>
                             <tr th:each="credential:${credentials}">
                                 <td>
-<!--                                    <a type="button" class="btn btn-success"-->
-<!--                                        th:onclick="javascript:showCredentialModal([[${credential.credentialId}]],[[${credential.url}]],-->
-<!--                                                                                   [[${credential.username}]],-->
-<!--                                                                                   [[${credential.decryptPassword(credential.password)}]])">-->
-<!--&lt;!&ndash;                                        th:href="@{/credential-update/{credentialId}(credentialId=${credential.credentialId})}">&ndash;&gt;-->
-<!--                                        Edit-->
-<!--                                    </a>-->
                                     <button type="button" class="btn btn-success"
-                                            th:onclick="javascript:showCredentialModal([[${credential.credentialId}]],
-                                                                                       [[${credential.url}]],
-                                                                                       [[${credential.username}]],
-                                                                                       [[${credential.decryptPassword(credential.password)}]])">
-                                        <!--th:href="@{/credential-update/{credentialId}(credentialId=${credential.credentialId})}">-->
+                                            th:onclick="javascript: showCredentialModal([[${credential.credentialId}]],[[${credential.url}]],[[${credential.username}]],[[${credential.password}]])">
                                         Edit
                                     </button>
                                     <a class="btn btn-danger" th:href="@{/credential-delete/{credentialId}(credentialId=${credential.credentialId})}">
@@ -239,6 +228,17 @@
 
 <!--For opening the note modal-->
 <script type="text/javascript">
+    async function fetchDecodedPassword(credentialId) {
+        let port = location.port;
+        let response = await fetch(`http://localhost:${port}/decode-password?credentialId=${credentialId}`)
+        if (response.ok) {
+            let data = await response.json();
+            let result = JSON.parse(JSON.stringify(data));
+            return result.decryptedPassword;
+        } else {
+            alert(response.status);
+        }
+    }
     // For opening the note modal
     function showNoteModal(noteId, noteTitle, noteDescription) {
         $('#note-id').val(noteId ? noteId : '');
@@ -246,15 +246,18 @@
         $('#note-description').val(noteDescription ? noteDescription : '');
         $('#noteModal').modal('show');
     }
-
     // For opening the credentials modal
-    function showCredentialModal(credentialId, url, username, password) {
+    async function showCredentialModal(credentialId, url, username, password){
+        let decryptedPassword = ''
+        if(credentialId) {
+            decryptedPassword = await fetchDecodedPassword(credentialId);
+        }
         $('#credential-id').val(credentialId ? credentialId : '');
         $('#credential-url').val(url ? url : '');
         $('#credential-username').val(username ? username : '');
-        $('#credential-password').val(password ? password : '');
+        $('#credential-password').val(decryptedPassword ? decryptedPassword : '');
         $('#credentialModal').modal('show');
     }
-</script>
+    </script>
 </body>
 </html>

@@ -1,12 +1,8 @@
 package com.udacity.jwdnd.course1.cloudstorage.services;
 
 import com.udacity.jwdnd.course1.cloudstorage.mappers.CredentialMapper;
-import com.udacity.jwdnd.course1.cloudstorage.mappers.NoteMapper;
 import com.udacity.jwdnd.course1.cloudstorage.models.Credentials;
-import com.udacity.jwdnd.course1.cloudstorage.models.Files;
-import com.udacity.jwdnd.course1.cloudstorage.models.Notes;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.SecureRandom;
@@ -16,33 +12,27 @@ import java.util.List;
 @Service
 public class CredentialService {
     private final CredentialMapper credentialMapper;
-    private final EncryptionService encryptionService;
-    private String encodedKey;
 
-    public CredentialService(CredentialMapper credentialMapper, EncryptionService encryptionService) {
+    public CredentialService(CredentialMapper credentialMapper) {
         this.credentialMapper = credentialMapper;
-        this.encryptionService = encryptionService;
-        SecureRandom random = new SecureRandom();
-        byte[] key = new byte[16];
-        random.nextBytes(key);
-        this.encodedKey = Base64.getEncoder().encodeToString(key);
     }
 
     public Credentials uploadCredential(String url,
                                         String username,
                                         String password,
                                         Integer userId) throws IOException {
-//        String encryptedPassword = encryptionService.encryptValue(password, this.encodedKey);
-//        System.out.println("encrypted password: " + encryptedPassword);
-//        String decryptedPassword = encryptionService.decryptValue(encryptedPassword, this.encodedKey);
-//        System.out.println("decrypted password: " + decryptedPassword);
+        SecureRandom random = new SecureRandom();
+        byte[] key = new byte[16];
+        random.nextBytes(key);
+        String encodedKey = Base64.getEncoder().encodeToString(key);
+        EncryptionService encryptionService = new EncryptionService();
+        String encryptedPassword = encryptionService.encryptValue(password, encodedKey);
         Credentials newCredential = new Credentials(
             url,
             username,
-            password,
+            encryptedPassword,
             userId,
-            this.encryptionService,
-            this.encodedKey
+            encodedKey
         );
         try {
             credentialMapper.save(newCredential);
@@ -53,22 +43,23 @@ public class CredentialService {
     }
 
     public Credentials updateCredential(Integer credentialId,
-                                        String credentialUrl,
-                                        String credentialUsername,
-                                        String credentialPassword,
+                                        String url,
+                                        String username,
+                                        String password,
                                         Integer userId) throws IOException {
-//        String encryptedPassword = encryptionService.encryptValue(credentialPassword, this.encodedKey);
-//        System.out.println("encrypted password: " + encryptedPassword);
-//        String decryptedPassword = encryptionService.decryptValue(encryptedPassword, this.encodedKey);
-//        System.out.println("decrypted password: " + decryptedPassword);
+        SecureRandom random = new SecureRandom();
+        byte[] key = new byte[16];
+        random.nextBytes(key);
+        String encodedKey = Base64.getEncoder().encodeToString(key);
+        EncryptionService encryptionService = new EncryptionService();
+        String encryptedPassword = encryptionService.encryptValue(password, encodedKey);
         Credentials newCredential = new Credentials(
             credentialId,
-            credentialUrl,
-            credentialUsername,
-            credentialPassword,
+            url,
+            username,
+            encryptedPassword,
             userId,
-            this.encryptionService,
-            this.encodedKey
+            encodedKey
         );
         try {
             credentialMapper.update(newCredential);
@@ -88,5 +79,9 @@ public class CredentialService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public Credentials decodePassword(Integer credentialId){
+        return credentialMapper.findByCredentialId(credentialId);
     }
 }

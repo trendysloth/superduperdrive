@@ -8,18 +8,21 @@ import java.util.List;
 
 @Mapper
 public interface CredentialMapper {
-    @Insert("INSERT INTO CREDENTIALS (url, username, password, userId) " +
-            "VALUES(#{credential.url}, #{credential.username}, #{credential.password}, #{credential.userId})")
+    @Insert("INSERT INTO CREDENTIALS (url, username, key, password, userId) " +
+            "VALUES(#{credential.url}, #{credential.username}, #{credential.key}, #{credential.password}, #{credential.userId})")
     @Options(useGeneratedKeys = true, keyProperty = "credentialId")
     Integer save(@Param("credential") Credentials credential);
 
-    @Select("SELECT * FROM CREDENTIALS WHERE userid = #{userId}")
+    @Select("SELECT * FROM CREDENTIALS WHERE userid=#{userId}")
     List<Credentials> findCredentialsByUserId(@Param("userId") Integer userId);
 
-    @Delete("DELETE FROM CREDENTIALS WHERE credentialId = #{credentialId}")
+    @Delete("DELETE FROM CREDENTIALS WHERE credentialId=#{credentialId}")
     void deleteById(@Param("credentialId") Integer credentialId);
 
-    @Update("UPDATE CREDENTIALS SET url = #{credential.url}, username = #{credential.username}, password = #{credential.password} " +
+    @Update("UPDATE CREDENTIALS SET url=#{credential.url}, username=#{credential.username}, key=#{credential.key},password=#{credential.password} " +
             "WHERE credentialId = #{credential.credentialId}")
     void update(@Param("credential") Credentials credential);
+
+    @Select("SELECT * FROM CREDENTIALS WHERE credentialId=#{credentialId}")
+    Credentials findByCredentialId(@Param("credentialId") Integer credentialId);
 }
