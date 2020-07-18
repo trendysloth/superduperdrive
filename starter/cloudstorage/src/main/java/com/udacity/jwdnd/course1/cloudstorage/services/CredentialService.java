@@ -32,12 +32,17 @@ public class CredentialService {
                                         String username,
                                         String password,
                                         Integer userId) throws IOException {
-        String encryptedPassword = encryptionService.encryptValue(password, this.encodedKey);
+//        String encryptedPassword = encryptionService.encryptValue(password, this.encodedKey);
+//        System.out.println("encrypted password: " + encryptedPassword);
+//        String decryptedPassword = encryptionService.decryptValue(encryptedPassword, this.encodedKey);
+//        System.out.println("decrypted password: " + decryptedPassword);
         Credentials newCredential = new Credentials(
             url,
             username,
-            encryptedPassword,
-            userId
+            password,
+            userId,
+            this.encryptionService,
+            this.encodedKey
         );
         try {
             credentialMapper.save(newCredential);
@@ -52,13 +57,18 @@ public class CredentialService {
                                         String credentialUsername,
                                         String credentialPassword,
                                         Integer userId) throws IOException {
-        String encryptedPassword = encryptionService.encryptValue(credentialPassword, this.encodedKey);
+//        String encryptedPassword = encryptionService.encryptValue(credentialPassword, this.encodedKey);
+//        System.out.println("encrypted password: " + encryptedPassword);
+//        String decryptedPassword = encryptionService.decryptValue(encryptedPassword, this.encodedKey);
+//        System.out.println("decrypted password: " + decryptedPassword);
         Credentials newCredential = new Credentials(
             credentialId,
             credentialUrl,
             credentialUsername,
-            encryptedPassword,
-            userId
+            credentialPassword,
+            userId,
+            this.encryptionService,
+            this.encodedKey
         );
         try {
             credentialMapper.update(newCredential);
