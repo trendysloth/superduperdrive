@@ -1,6 +1,7 @@
 package com.udacity.jwdnd.course1.cloudstorage.models;
 
 import com.udacity.jwdnd.course1.cloudstorage.services.EncryptionService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.security.SecureRandom;
 import java.util.Base64;
@@ -39,14 +40,16 @@ public class Credentials {
     }
 
     public String encryptPassword(String password) {
-        System.out.println("Encryption key: " + this.encodedKey);
-        System.out.println("Encryption Service: " + this.encryptionService);
+//        System.out.println("Encryption key: " + this.encodedKey);
+//        System.out.println("Encryption Service: " + this.encryptionService);
         String encryptedPassword = this.encryptionService.encryptValue(password, this.encodedKey);
         return encryptedPassword;
     }
-    public String decryptPassword(String password, EncryptionService encryptionService, String encodedKey) {
-        System.out.println("Encryption Service: " + encryptionService);
-        System.out.println("Decryption Key: " + encodedKey);
+
+    @Autowired
+    public String decryptPassword(String password) {
+        System.out.println("Encryption Service: " + this.encryptionService);
+        System.out.println("Decryption Key: " + this.encodedKey);
 //        String decryptedPassword = this.encryptionService.encryptValue(password, this.encodedKey);
         return "haha";
     }

@@ -170,7 +170,7 @@
                                     <a type="button" class="btn btn-success"
                                         th:onclick="javascript:showCredentialModal([[${credential.credentialId}]],[[${credential.url}]],
                                                                                    [[${credential.username}]],
-                                                                                   [[${credential.decryptPassword(credential.password, credential.encryptionService, credential.encodedKey)}]])">
+                                                                                   [[${credential.decryptPassword(credential.password)}]])">
 <!--                                        th:href="@{/credential-update/{credentialId}(credentialId=${credential.credentialId})}">-->
                                         Edit
                                     </a>
