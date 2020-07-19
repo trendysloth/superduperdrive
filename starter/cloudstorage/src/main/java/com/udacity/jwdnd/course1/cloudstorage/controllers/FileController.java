@@ -40,8 +40,20 @@ public class FileController {
     public String uploadFile(@RequestParam("fileUpload") MultipartFile fileUpload,
                              Authentication auth,
                              Model model) throws IOException {
+        String fileUploadError = null;
         User user = this.userService.getUser(auth.getName());
-        this.fileService.uploadFile(fileUpload, user.getUserid());
+        if (this.fileService.isFileNameAvailable(fileUpload, user.getUserid())) {
+            try {
+                this.fileService.uploadFile(fileUpload, user.getUserid());
+                model.addAttribute("fileUploadSuccess", "File successfully uploaded.");
+            } catch (Exception e) {
+                fileUploadError = e.toString();
+                model.addAttribute("fileError", fileUploadError);
+            }
+        } else {
+            model.addAttribute("fileError", "Can't upload files with duplicate names.");
+        }
+
         model.addAttribute("files", this.fileService.getAllFiles(user.getUserid()));
         model.addAttribute("notes", this.noteService.getAllNotes(user.getUserid()));
         model.addAttribute("credentials", this.credentialService.getAllCredentials(user.getUserid()));
@@ -65,7 +77,14 @@ public class FileController {
     public String deleteFile(@PathVariable("fileid") Integer fileId,
                              Authentication auth,
                              Model model) throws IOException {
-        fileService.deleteFile(fileId);
+        String fileDeleteError = null;
+        try {
+            fileService.deleteFile(fileId);
+            model.addAttribute("fileDeleteSuccess", "File successfully deleted.");
+        } catch (Exception e) {
+            fileDeleteError = e.toString();
+            model.addAttribute("fileError", fileDeleteError);
+        }
         User user = this.userService.getUser(auth.getName());
         model.addAttribute("files", this.fileService.getAllFiles(user.getUserid()));
         model.addAttribute("notes", this.noteService.getAllNotes(user.getUserid()));

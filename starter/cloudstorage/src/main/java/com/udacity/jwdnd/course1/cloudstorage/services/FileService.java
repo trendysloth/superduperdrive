@@ -14,7 +14,7 @@ public class FileService {
     @Autowired
     private FileMapper fileMapper;
 
-    public Files uploadFile(MultipartFile multipartFile, Integer userId) throws IOException {
+    public void uploadFile(MultipartFile multipartFile, Integer userId) throws Exception {
         Files newFile = new Files(
             multipartFile.getOriginalFilename(),
             multipartFile.getContentType(),
@@ -24,18 +24,18 @@ public class FileService {
         );
 
         try {
+
             fileMapper.save(newFile);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return newFile;
     }
 
     public List<Files> getAllFiles(Integer userId) {
         return fileMapper.findFilesByUserId(userId);
     }
 
-    public Files getFileById(Integer fileId) throws IOException {
+    public Files getFileById(Integer fileId) {
         return fileMapper.findById(fileId);
     }
 
@@ -45,5 +45,18 @@ public class FileService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean isFileNameAvailable(MultipartFile multipartFile, Integer userId) {
+        Boolean isFileNameAvailable = true;
+        List <Files> files = fileMapper.findFilesByUserId(userId);
+        for (int i = 0; i < files.size(); i++){
+            Files currFile = files.get(i);
+            if (currFile.getFileName().equals(multipartFile.getOriginalFilename())) {
+                isFileNameAvailable = false;
+                break;
+            }
+        }
+        return isFileNameAvailable;
     }
 }

@@ -44,10 +44,10 @@ class CloudStorageApplicationTests {
 	public void testSignUp() throws InterruptedException {
 		// sign up
 		driver.get("http://localhost:" + this.port + "/signup");
-		driver.findElement(By.id("inputFirstName")).sendKeys("test-test");
-		driver.findElement(By.id("inputLastName")).sendKeys("test-test");
-		driver.findElement(By.id("inputUsername")).sendKeys("test-test");
-		driver.findElement(By.id("inputPassword")).sendKeys("test-test");
+		driver.findElement(By.id("inputFirstName")).sendKeys("test24");
+		driver.findElement(By.id("inputLastName")).sendKeys("test24");
+		driver.findElement(By.id("inputUsername")).sendKeys("test24");
+		driver.findElement(By.id("inputPassword")).sendKeys("test24");
 		Thread.sleep(4000);
 		driver.findElement(By.id("submit-button")).click();
 
@@ -55,8 +55,8 @@ class CloudStorageApplicationTests {
 		driver.get("http://localhost:" + this.port + "/login");
 
 		// login
-		driver.findElement(By.id("inputUsername")).sendKeys("test-test");
-		driver.findElement(By.id("inputPassword")).sendKeys("test-test");
+		driver.findElement(By.id("inputUsername")).sendKeys("test24");
+		driver.findElement(By.id("inputPassword")).sendKeys("test24");
 		driver.findElement(By.id("submit-button")).click();
 		Thread.sleep(4000);
 
@@ -69,8 +69,8 @@ class CloudStorageApplicationTests {
 	@Order(2)
 	public void testValidLogin() throws InterruptedException {
 		driver.get("http://localhost:" + this.port + "/login");
-		driver.findElement(By.id("inputUsername")).sendKeys("test3");
-		driver.findElement(By.id("inputPassword")).sendKeys("test3");
+		driver.findElement(By.id("inputUsername")).sendKeys("test24");
+		driver.findElement(By.id("inputPassword")).sendKeys("test24");
 		driver.findElement(By.id("submit-button")).click();
 		Assertions.assertEquals("Home", driver.getTitle());
 	}
@@ -89,8 +89,8 @@ class CloudStorageApplicationTests {
 	public void testNote() throws InterruptedException {
 		// login
 		driver.get("http://localhost:" + this.port + "/login");
-		driver.findElement(By.id("inputUsername")).sendKeys("test3");
-		driver.findElement(By.id("inputPassword")).sendKeys("test3");
+		driver.findElement(By.id("inputUsername")).sendKeys("test24");
+		driver.findElement(By.id("inputPassword")).sendKeys("test24");
 		driver.findElement(By.id("submit-button")).click();
 
 		// Switch to notes tab
@@ -107,6 +107,18 @@ class CloudStorageApplicationTests {
 			driver.findElement(By.id("note-submit")).click();
 			Thread.sleep(2000);
 			noteCreated = true;
+		} catch(Exception e) {
+			System.out.println(e);
+		}
+
+		// Create another note
+		try {
+			driver.findElement(By.id("new-note")).click();
+			Thread.sleep(2000);
+			driver.findElement(By.id("note-title")).sendKeys("note-title");
+			driver.findElement(By.id("note-description")).sendKeys("note-description");
+			driver.findElement(By.id("note-submit")).click();
+			Thread.sleep(2000);
 		} catch(Exception e) {
 			System.out.println(e);
 		}
@@ -154,8 +166,8 @@ class CloudStorageApplicationTests {
 	public void testCredentials() throws InterruptedException {
 		// login
 		driver.get("http://localhost:" + this.port + "/login");
-		driver.findElement(By.id("inputUsername")).sendKeys("test3");
-		driver.findElement(By.id("inputPassword")).sendKeys("test3");
+		driver.findElement(By.id("inputUsername")).sendKeys("test24");
+		driver.findElement(By.id("inputPassword")).sendKeys("test24");
 		driver.findElement(By.id("submit-button")).click();
 
 		// Switch to credentials tab
@@ -173,6 +185,18 @@ class CloudStorageApplicationTests {
 			driver.findElement(By.id("credential-submit")).click();
 			Thread.sleep(4000);
 			credentialCreated = true;
+		} catch(Exception e) {
+			System.out.println(e);
+		}
+
+		try {
+			driver.findElement(By.id("new-credential")).click();
+			Thread.sleep(2000);
+			driver.findElement(By.id("credential-url")).sendKeys("gmail.com");
+			driver.findElement(By.id("credential-username")).sendKeys("test");
+			driver.findElement(By.id("credential-password")).sendKeys("test");
+			driver.findElement(By.id("credential-submit")).click();
+			Thread.sleep(4000);
 		} catch(Exception e) {
 			System.out.println(e);
 		}

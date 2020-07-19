@@ -34,11 +34,25 @@ public class NoteController {
                              @RequestParam("noteId") Integer noteId,
                              Authentication auth,
                              Model model) throws IOException {
+        String noteEditError = null;
+        String noteUploadError = null;
         User user = this.userService.getUser(auth.getName());
         if (noteId == null) {
-            this.noteService.uploadNote(noteTitle, noteDescription, user.getUserid());
+            try {
+                this.noteService.uploadNote(noteTitle, noteDescription, user.getUserid());
+                model.addAttribute("noteUploadSuccess", "Note successfully uploaded.");
+            } catch(Exception e) {
+                noteEditError = e.toString();
+                model.addAttribute("noteError", noteEditError);
+            }
         } else {
-            this.noteService.updateNote(noteId, noteTitle, noteDescription, user.getUserid());
+            try {
+                this.noteService.updateNote(noteId, noteTitle, noteDescription, user.getUserid());
+                model.addAttribute("noteEditSuccess", "Note successfully updated.");
+            } catch(Exception e) {
+                noteUploadError = e.toString();
+                model.addAttribute("noteError", noteUploadError);
+            }
         }
         model.addAttribute("files", this.fileService.getAllFiles(user.getUserid()));
         model.addAttribute("notes", this.noteService.getAllNotes(user.getUserid()));
@@ -50,7 +64,14 @@ public class NoteController {
     public String deleteFile(@PathVariable("noteId") Integer noteId,
                              Authentication auth,
                              Model model) throws IOException {
-        noteService.deleteNote(noteId);
+        String noteDeleteError = null;
+        try {
+            noteService.deleteNote(noteId);
+            model.addAttribute("noteDeleteSuccess", "Note successfully deleted.");
+        } catch (Exception e) {
+            noteDeleteError = e.toString();
+            model.addAttribute("noteError", noteDeleteError);
+        }
         User user = this.userService.getUser(auth.getName());
         model.addAttribute("files", this.fileService.getAllFiles(user.getUserid()));
         model.addAttribute("notes", this.noteService.getAllNotes(user.getUserid()));

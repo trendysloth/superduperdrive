@@ -5,6 +5,7 @@ import com.udacity.jwdnd.course1.cloudstorage.models.User;
 import com.udacity.jwdnd.course1.cloudstorage.services.*;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -37,11 +38,33 @@ public class CredentialController {
                                    @RequestParam("password") String credentialPassword,
                                    Authentication auth,
                                    Model model) throws IOException {
+        String credentialEditError = null;
+        String credentialUploadError = null;
         User user = this.userService.getUser(auth.getName());
         if (credentialId == null) {
-            this.credentialService.uploadCredential(credentialUrl, credentialUsername, credentialPassword, user.getUserid());
+            try {
+                this.credentialService.uploadCredential(credentialUrl,
+                                                        credentialUsername,
+                                                        credentialPassword,
+                                                        user.getUserid());
+                model.addAttribute("credentialUploadSuccess", "Credential successfully uploaded.");
+            } catch(Exception e) {
+                credentialUploadError = e.toString();
+                model.addAttribute("credentialError", credentialUploadError);
+            }
         } else {
-            this.credentialService.updateCredential(credentialId, credentialUrl, credentialUsername, credentialPassword, user.getUserid());
+            try {
+                this.credentialService.updateCredential(credentialId,
+                                                        credentialUrl,
+                                                        credentialUsername,
+                                                        credentialPassword,
+                                                        user.getUserid());
+                model.addAttribute("credentialEditSuccess", "Credential successfully updated.");
+            } catch(Exception e) {
+                credentialEditError = e.toString();
+                model.addAttribute("credentialError", credentialEditError);
+            }
+
         }
         model.addAttribute("files", this.fileService.getAllFiles(user.getUserid()));
         model.addAttribute("notes", this.noteService.getAllNotes(user.getUserid()));
@@ -66,8 +89,16 @@ public class CredentialController {
     public String deleteCredential(@PathVariable("credentialId") Integer credentialId,
                                    Authentication auth,
                                    Model model) throws IOException {
+        String credentialDeleteError = null;
+        try {
+            this.credentialService.deleteCredential(credentialId);
+            model.addAttribute("credentialDeleteSuccess", "Credential successfully deleted.");
+        } catch (Exception e) {
+            credentialDeleteError = e.toString();
+            model.addAttribute("credentialError", credentialDeleteError);
+        }
         User user = this.userService.getUser(auth.getName());
-        this.credentialService.deleteCredential(credentialId);
+
         model.addAttribute("files", this.fileService.getAllFiles(user.getUserid()));
         model.addAttribute("notes", this.noteService.getAllNotes(user.getUserid()));
         model.addAttribute("credentials", this.credentialService.getAllCredentials(user.getUserid()));
