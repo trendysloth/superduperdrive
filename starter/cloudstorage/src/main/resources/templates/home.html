@@ -19,6 +19,8 @@
             var activeTab = localStorage.getItem('activeTab');
             if(activeTab){
                 $('#nav-tab a[href="' + activeTab + '"]').tab('show');
+            } else {
+                $('#nav-tab a[href="' + '#nav-files' + '"]').tab('show');
             }
         });
     </script>
@@ -29,7 +31,7 @@
 
         <form th:action="@{/logout}" method="POST">
             <button type="submit" class="btn btn-secondary float-right"
-                    onclick="localStorage.setItem('activeTab', 'nav-files');">
+                    onclick="localStorage.setItem('activeTab', '#nav-files');">
                 Logout
             </button>
         </form>
@@ -38,7 +40,7 @@
     <div id="contentDiv" style="clear: right;">
         <nav style="clear: right;">
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <a class="nav-item nav-link active" id="nav-files-tab" data-toggle="tab" href="#nav-files" role="tab" aria-controls="nav-files" aria-selected="true">Files</a>
+                <a class="nav-item nav-link" id="nav-files-tab" data-toggle="tab" href="#nav-files" role="tab" aria-controls="nav-files" aria-selected="false">Files</a>
                 <a class="nav-item nav-link" id="nav-notes-tab" data-toggle="tab" href="#nav-notes" role="tab" aria-controls="nav-notes" aria-selected="false">Notes</a>
                 <a class="nav-item nav-link" id="nav-credentials-tab" data-toggle="tab" href="#nav-credentials" role="tab" aria-controls="nav-credentials" aria-selected="false">Credentials</a>
             </div>
